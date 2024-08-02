@@ -8,20 +8,35 @@
 
   <ItemGroup>
     <Compile Remove="Controllers\**" />
+    <Compile Remove="Models\**" />
     <Content Remove="Controllers\**" />
+    <Content Remove="Models\**" />
     <EmbeddedResource Remove="Controllers\**" />
+    <EmbeddedResource Remove="Models\**" />
     <None Remove="Controllers\**" />
+    <None Remove="Models\**" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="GraphQL" Version="4.6.1" />
     <PackageReference Include="GraphQL.Server.Transports.AspNetCore.SystemTextJson" Version="5.2.2" />
     <PackageReference Include="GraphQL.Server.Ui.Altair" Version="5.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.7">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
   <ItemGroup>
     <_GlobalJsonStartingDir Remove="Controllers\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Models\Device.cs" />
+    <Compile Include="Models\DeviceManagementContext.cs" />
+    <Compile Include="Models\WeatherForecast.cs" />
   </ItemGroup>
 
 </Project>

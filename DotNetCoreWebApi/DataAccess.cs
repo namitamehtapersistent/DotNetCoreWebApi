@@ -1,84 +1,56 @@
-﻿namespace DotNetCoreWebApi;
-    public interface IDataAccess {
-        public IList<WeatherForecast> Get();
+﻿using DotNetCoreWebApi.Models;
 
-        public void Create(WeatherForecast wf);
+namespace DotNetCoreWebApi;
+public interface IDataAccess
+{
+    public IList<WeatherForecast> Get();
 
-        public void Update(int temperatureC, WeatherForecast wf);
+    public void Create(WeatherForecast wf);
 
-        public WeatherForecast Delete(int temperatureC);
+    public void Update(int temperatureC, WeatherForecast wf);
+
+    public WeatherForecast Delete(int temperatureC);
 }
 
-    public class DataAccess : IDataAccess
+public class DataAccess : IDataAccess
+{
+    private readonly DeviceManagementContext _context;
+
+    public DataAccess()
     {
-        private readonly List<WeatherForecast> weatherForecast = new List<WeatherForecast>
+        this._context = new DeviceManagementContext();
+    }
+
+    public IList<WeatherForecast> Get() => this._context.WeatherForecasts.ToList();
+
+    public void Create(WeatherForecast wf)
+    {
+        this._context.WeatherForecasts.Add(wf);
+        this._context.SaveChanges();
+    }
+
+    public void Update(int temperatureC, WeatherForecast wf)
+    {
+        var deviceToUpdate = this._context.WeatherForecasts.FirstOrDefault(o => o.TemperatureC == temperatureC);
+        if (deviceToUpdate != null)
         {
-            new WeatherForecast
-            {
-                TemperatureC = 36,
-                //TemperatureF = -10,
-
-                Summary = "Test Summary for summer filter"
-            },
-            new WeatherForecast
-            {
-                TemperatureC = -10,
-                //TemperatureF = -10,
-                Summary = "Test Summary for winter filter"
-            },
-            new WeatherForecast
-            {
-                //TemperatureF = -10,
-                TemperatureC = 3,
-                Summary = "Test Summary"
-            },
-            new WeatherForecast
-            {
-                //TemperatureF = -10,
-                TemperatureC = -1,
-                Summary = "Test Summary"
-            },
-            new WeatherForecast
-            {
-                //TemperatureF = -10,
-                TemperatureC = 6,
-                Summary = "Test Summary"
-            },
-            new WeatherForecast
-            {
-                //TemperatureF = -10,
-                TemperatureC = -40,
-                Summary = "Test Summary"
-            },
-        };
-
-        public IList<WeatherForecast> Get() => weatherForecast;
-
-        public void Create(WeatherForecast wf)
-        {
-            weatherForecast.Add(wf);
+            this._context.Entry(deviceToUpdate).CurrentValues.SetValues(wf);
+            this._context.SaveChanges();
         }
+    }
 
-        public void Update(int temperatureC, WeatherForecast wf)
+    public WeatherForecast Delete(int temperatureC)
+    {
+        var weather = this._context.WeatherForecasts.FirstOrDefault(x => x.TemperatureC == temperatureC);
+        if (weather != null)
         {
-            int index = weatherForecast.FindIndex(x => x.TemperatureC == temperatureC);
-            if (index != -1)
-            {
-               weatherForecast[index] = wf;
-            }
+            this._context.WeatherForecasts.Remove(weather);
+            this._context.SaveChanges();
+            return weather;
         }
+        return null;
 
-        public WeatherForecast Delete(int temperatureC)
-        {
-            int index = weatherForecast.FindIndex(x => x.TemperatureC == temperatureC);
-            if (index != -1)
-            {
-                var wf = weatherForecast[index];
-                weatherForecast.RemoveAt(index);
-                return wf;
-            }
-            return null;
-        }
+    }
 
 }
 

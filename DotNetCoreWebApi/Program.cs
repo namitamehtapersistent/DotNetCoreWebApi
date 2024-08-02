@@ -1,9 +1,11 @@
 global using GraphQL.Types;
 
 using DotNetCoreWebApi;
+using DotNetCoreWebApi.Models;
 using GraphQL.Server;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,11 @@ var builder = WebApplication.CreateBuilder(args);
 // commented for GrapghQL
 //builder.Services.AddControllers();
 //-------
+
+// Added for EF CORE integration
+//builder.Services.AddDbContext<DeviceManagementContext>(options =>
+//    options.UseSqlServer(builder.Configuration.GetConnectionString("GraphQLDBConnection")));
+//------------
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -28,12 +35,14 @@ builder.Services.AddCors(options =>
     });  //("https://localhost:44456")
 });
 
+// Added for EF CORE integration
+//builder.Services.AddSingleton<DeviceManagementContext>();
 // Added for GrapghQL
+builder.Services.AddSingleton<IDataAccess, DataAccess>();
 builder.Services.AddSingleton<IWeatherForecastProvider, WeatherForecastProvider>();
 builder.Services.AddSingleton<WeatherForcastType>();
 builder.Services.AddSingleton<WeatherQuery>();
 builder.Services.AddSingleton<ISchema, WeatherSchema>();
-builder.Services.AddSingleton<IDataAccess, DataAccess>();
 builder.Services.AddSingleton<IWeatherForecastCreator, WeatherForecastCreator>();
 builder.Services.AddSingleton<WeatherForecastMutation>();
 builder.Services.AddSingleton<WeatherForecastInput>();
