@@ -1,5 +1,4 @@
 using GraphQL;
-using GraphQL.Types;
 
 namespace DotNetCoreWebApi
 {
@@ -46,42 +45,12 @@ namespace DotNetCoreWebApi
     {
         public WeatherSchema(IServiceProvider serviceProvider) : base(serviceProvider)
         {
-            Query = serviceProvider.GetRequiredService<WeatherQuery>();
+            Query = serviceProvider.GetRequiredService<WeatherQuery>();  // Get Data
+            Mutation = serviceProvider.GetRequiredService<WeatherForecastMutation>(); // Create, Update, Delete Data
         }
     }
 
-    public interface IWeatherForecastProvider
-    {
-        WeatherForecast[] GetWeatherForecast();
-    }
-    public class WeatherForecastProvider : IWeatherForecastProvider
-    {
-        public WeatherForecast[] GetWeatherForecast()
-        {
-
-            WeatherForecast[] result = new WeatherForecast[6];
-            result[0] = new WeatherForecast
-            {
-                TemperatureC = 36,
-                Summary = "Test Summary for summer filter"
-            };
-            result[1] = new WeatherForecast
-            {
-                TemperatureC = -10,
-                Summary = "Test Summary for winter filter"
-            };
-            for (int i = 2; i < 6; i++)
-            {
-                result[i] = new WeatherForecast
-                {
-                    TemperatureC = Random.Shared.Next(-20, 55),
-                    Summary = "Test Summary"
-                };
-            }
-
-            return result;
-        }
-    }
+   
     //-----
 
 }

@@ -2,6 +2,7 @@ global using GraphQL.Types;
 
 using DotNetCoreWebApi;
 using GraphQL.Server;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,11 +16,27 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//builder.Services.AddCors();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowMyOrigin",
+    builder =>
+    {
+        builder.WithOrigins("http://localhost:3000/") 
+     .AllowAnyHeader()
+     .AllowAnyMethod();
+    });  //("https://localhost:44456")
+});
+
 // Added for GrapghQL
 builder.Services.AddSingleton<IWeatherForecastProvider, WeatherForecastProvider>();
 builder.Services.AddSingleton<WeatherForcastType>();
 builder.Services.AddSingleton<WeatherQuery>();
 builder.Services.AddSingleton<ISchema, WeatherSchema>();
+builder.Services.AddSingleton<IDataAccess, DataAccess>();
+builder.Services.AddSingleton<IWeatherForecastCreator, WeatherForecastCreator>();
+builder.Services.AddSingleton<WeatherForecastMutation>();
+builder.Services.AddSingleton<WeatherForecastInput>();
 
 // Configure grapgh QL in dependency injection
 builder.Services.AddGraphQL(opt => opt.EnableMetrics = true).AddSystemTextJson();
@@ -50,5 +67,8 @@ app.UseGraphQL<ISchema>();  //app.UseGraphiQl("/graphql");
 //app.UseAuthorization();
 //app.MapControllers();
 //----------
+
+app.UseCors("AllowMyOrigin");
+//app.UseCors();
 
 app.Run();
