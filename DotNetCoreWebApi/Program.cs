@@ -19,20 +19,34 @@ var builder = WebApplication.CreateBuilder(args);
 //    options.UseSqlServer(builder.Configuration.GetConnectionString("GraphQLDBConnection")));
 //------------
 
+//builder.Services.AddAuthorization();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 //builder.Services.AddCors();
+
+//builder.Services.AddCors(options =>
+//{
+//    options.AddPolicy("AllowMyOrigin",
+//    builder =>
+//    {
+//        builder.WithOrigins("https://localhost:3000") 
+//     .AllowAnyHeader()
+//     .AllowAnyMethod();
+//    });  //("https://localhost:44456")
+//});
+
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowMyOrigin",
-    builder =>
-    {
-        builder.WithOrigins("http://localhost:3000/") 
-     .AllowAnyHeader()
-     .AllowAnyMethod();
-    });  //("https://localhost:44456")
+    options.AddPolicy("AllowReactApp",
+        builder =>
+        {
+            builder.WithOrigins("https://localhost:3000")
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+        });
 });
 
 // Added for EF CORE integration
@@ -52,6 +66,9 @@ builder.Services.AddGraphQL(opt => opt.EnableMetrics = true).AddSystemTextJson()
 
 var app = builder.Build();
 
+app.UseCors("AllowReactApp");
+
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -59,13 +76,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
 
-// Added for GrapghQL
-app.MapGet("api/products", ([FromServices] IWeatherForecastProvider WeatherForecastProvider) =>
-{
-    return WeatherForecastProvider.GetWeatherForecast();
-}).WithName("GetProducts");
+
+//app.UseHttpsRedirection();
+
+// Added to call providers without graphql
+//app.MapGet("api/products", ([FromServices] IWeatherForecastProvider WeatherForecastProvider) =>
+//{
+//    return WeatherForecastProvider.GetWeatherForecast();
+//}).WithName("GetProducts");
 
 app.UseGraphQLAltair();
 app.UseGraphQL<ISchema>();  //app.UseGraphiQl("/graphql");
@@ -77,7 +96,12 @@ app.UseGraphQL<ISchema>();  //app.UseGraphiQl("/graphql");
 //app.MapControllers();
 //----------
 
-app.UseCors("AllowMyOrigin");
+//app.MapGraphQL<ISchema>();
+
+//app.UseCors("AllowMyOrigin");
 //app.UseCors();
+
+//app.MapGet("/test-cors", () => Results.Ok("CORS is working!"));
+
 
 app.Run();
