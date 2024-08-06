@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetCoreWebApi", "DotNetCoreWebApi\DotNetCoreWebApi.csproj", "{407B5190-49B2-412E-9DD5-E47A08C170CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetCoreWebApi", "DotNetCoreWebApi\DotNetCoreWebApi.csproj", "{407B5190-49B2-412E-9DD5-E47A08C170CA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceMicroservice", "DeviceMicroservice\DeviceMicroservice.csproj", "{0C8404D9-A938-4BC8-9768-77415210C6AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{407B5190-49B2-412E-9DD5-E47A08C170CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{407B5190-49B2-412E-9DD5-E47A08C170CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{407B5190-49B2-412E-9DD5-E47A08C170CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C8404D9-A938-4BC8-9768-77415210C6AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C8404D9-A938-4BC8-9768-77415210C6AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C8404D9-A938-4BC8-9768-77415210C6AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C8404D9-A938-4BC8-9768-77415210C6AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
